@@ -10,13 +10,14 @@ insert into Employee (id, salary) values ('3', '300')"""
     sql_list = sqls.split('\n')
     for sql in sql_list:
         database.execute_sql(sql)
+    #     BROUP BY 去除重复
     query_sql = """CREATE FUNCTION getNthHighestSalary(N INT) RETURNS INT
 BEGIN
+SET N := N-1;
   RETURN (
       # Write your MySQL query statement below.
-      select distinct a.salary from 
-      (select salary, dense_rank() over (order by salary desc) rank_s from employee) a
-      where rank_s=n
+        select salary  from Employee GROUP BY 
+            salary order by  salary DESC limit N,1
       
   );
 END"""
